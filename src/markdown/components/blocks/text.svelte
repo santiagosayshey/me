@@ -37,5 +37,15 @@
     >
       {token.content}
     </a>
+  {:else if token.type === 'footnote'}
+    <sup>
+      <a 
+        href="#fn-{token.footnoteId}" 
+        id="fnref-{token.footnoteId}" 
+        class="footnote-ref text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+      >
+        [{token.footnoteNumber || token.content}]
+      </a>
+    </sup>
   {/if}
 {/each}

@@ -1,11 +1,13 @@
 export interface TextToken {
   type: 'text' | 'bold' | 'italic' | 'boldItalic' | 'code' | 'strikethrough' | 'link' | 
-        'subscript' | 'superscript' | 'highlight' | 'underline' | 'mark' | 'linebreak' | 'html' | 'reference';
+        'subscript' | 'superscript' | 'highlight' | 'underline' | 'mark' | 'linebreak' | 'html' | 'reference' | 'footnote';
   content: string;
   href?: string; // for links
   title?: string; // for links
   tag?: string; // for html elements
   label?: string; // for reference links
+  footnoteId?: string; // for footnote references
+  footnoteNumber?: number; // for footnote references
 }
 
 export function parseInlineText(text: string): TextToken[] {
@@ -213,6 +215,20 @@ export function parseInlineText(text: string): TextToken[] {
       }
     }
     
+    // Check for footnote references [^id]
+    if (!matched) {
+      const footnoteMatch = remaining.slice(currentIndex).match(/^\[\^([^\]]+)\]/);
+      if (footnoteMatch) {
+        tokens.push({
+          type: 'footnote',
+          content: footnoteMatch[1],
+          footnoteId: footnoteMatch[1]
+        });
+        currentIndex += footnoteMatch[0].length;
+        matched = true;
+      }
+    }
+    
     // Check for links [text](url "title") or reference links [text][label]
     if (!matched) {
       // Inline link
@@ -311,12 +327,11 @@ export function parseNestedText(text: string): TextToken[] {
 // Process tokens with link definitions
 export function processTokensWithDefinitions(
   tokens: TextToken[], 
-  definitions?: Map<string, { url: string; title?: string }>
+  definitions?: Map<string, { url: string; title?: string }>,
+  footnoteDefinitions?: Map<string, { number: number }>
 ): TextToken[] {
-  if (!definitions) return tokens;
-  
   return tokens.map(token => {
-    if (token.type === 'reference' && token.label) {
+    if (token.type === 'reference' && token.label && definitions) {
       const def = definitions.get(token.label.toLowerCase());
       if (def) {
         return {
@@ -327,6 +342,17 @@ export function processTokensWithDefinitions(
         };
       }
     }
+    
+    if (token.type === 'footnote' && token.footnoteId && footnoteDefinitions) {
+      const def = footnoteDefinitions.get(token.footnoteId);
+      if (def) {
+        return {
+          ...token,
+          footnoteNumber: def.number
+        };
+      }
+    }
+    
     return token;
   });
 }

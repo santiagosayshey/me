@@ -413,11 +413,14 @@ This is hidden content that expands when clicked.
   <dd>Another definition</dd>
 </dl>
 
-## Mathematics (if supported)
+## Mathematics 
 
-Inline math: $E = mc^2$
+### Inline math
 
-Block math: $$
+$E = mc^2$
+
+### Block math 
+$$
 \begin{align}
 \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &= \frac{4\pi}{c}\vec{\mathbf{j}} \\
 \nabla \cdot \vec{\mathbf{E}} &= 4 \pi \rho \\
@@ -425,13 +428,6 @@ Block math: $$
 \nabla \cdot \vec{\mathbf{B}} &= 0
 \end{align}
 $$
-
-### Escaping Characters
-
-\*Not italic\* \*_Not bold\*_ \`Not code\` \# Not a heading \[Not a link\](not a
-url) \![Not an image\](not a url)
-
-Escape backslash: \\
 
 ### Special Characters & Entities
 
@@ -444,59 +440,6 @@ than: &gt; Ampersand: &amp; Non-breaking space: &nbsp; Em dash: &mdash; En dash:
 :smile: :heart: :thumbsup: :star: :fire: :rocket: :warning: :white_check_mark:
 
 Direct emoji: 😀 ❤️ 👍 ⭐ 🔥 🚀 ⚠️ ✅
-
-### Comments (HTML-style, won't be visible)
-
-<!-- This is a comment and won't be displayed -->
-
-[//]: # (This is also a comment)
-[//]: <> (Another comment style)
-
-### Edge Cases and Special Combinations
-
-Text with multiple___underscores___in___words
-
-CamelCaseWordsWithoutSpaces
-
-URLs without brackets: https://www.example.com
-
-Parentheses in URLs: [Link](https://en.wikipedia.org/wiki/Markdown_(syntax))
-
-Empty link: []()
-
-Link with spaces: [Link with spaces](https://example.com/path with spaces)
-
-Multiple consecutive blank lines:
-
-(There were 3 blank lines above)
-
-Very long line without breaks: Lorem ipsum dolor sit amet, consectetur
-adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-ut aliquip ex ea commodo consequat.
-
-Mixed indentation in lists:
-
-1. First level
-
-- Different indent (2 spaces)
-  - More indent (4 spaces)
-    - Even more (6 spaces)
-      - Maximum reasonable indent
-
-Unicode characters: café, naïve, 日本語, 中文, العربية, עברית, ελληνικά, русский
-
-### Raw HTML Block
-
-<div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
-  <h3 style="color: #333;">Custom HTML Block</h3>
-  <p style="color: #666;">This is a paragraph inside a custom HTML div.</p>
-  <ul>
-    <li>HTML list item 1</li>
-    <li>HTML list item 2</li>
-  </ul>
-</div>
-
 
 ---
 

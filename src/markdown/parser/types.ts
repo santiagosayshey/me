@@ -11,7 +11,9 @@ export type BlockType =
   | 'horizontalRule'
   | 'image'
   | 'link'
-  | 'toc';
+  | 'toc'
+  | 'footnotes'
+  | 'footnote';
 
 export interface MarkdownBlock {
   type: BlockType;
@@ -19,6 +21,7 @@ export interface MarkdownBlock {
   raw: string;
   metadata?: any;
   linkDefinitions?: Map<string, any>;
+  footnoteDefinitions?: Map<string, { number: number }>;
 }
 
 export interface ParsedMarkdown {

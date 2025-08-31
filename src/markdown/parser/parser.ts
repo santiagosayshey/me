@@ -10,6 +10,7 @@ import { parseImageBlock, isImageBlockStart } from './blocks/image';
 import { isTocMarker, createTocBlock } from './blocks/toc';
 import type { HeadingBlock } from './blocks/heading';
 import { extractLinkDefinitions, isLinkDefinition } from './inline/link';
+import { extractFootnoteDefinitions, createFootnotesSection } from './blocks/footnote';
 
 const DEFAULT_OPTIONS: ParserOptions = {
   enableFrontmatter: true,
@@ -41,7 +42,16 @@ export function parseMarkdown(
     const lines = remainingContent.split('\n');
     
     // Extract link definitions first
-    const { definitions, filteredLines } = extractLinkDefinitions(lines);
+    const { definitions: linkDefs, filteredLines: linesAfterLinks } = extractLinkDefinitions(lines);
+    
+    // Extract footnote definitions
+    const { definitions: footnoteDefs, filteredLines } = extractFootnoteDefinitions(linesAfterLinks);
+    
+    // Create a simplified footnote map for token processing
+    const footnoteMap = new Map<string, { number: number }>();
+    footnoteDefs.forEach((def, id) => {
+      footnoteMap.set(id, { number: def.number });
+    });
     
     let currentParagraph: string[] = [];
     const allHeadings: HeadingBlock[] = [];
@@ -59,7 +69,8 @@ export function parseMarkdown(
             type: 'paragraph',
             content: currentParagraph.join('\n'),
             raw: currentParagraph.join('\n'),
-            linkDefinitions: definitions
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
           });
           currentParagraph = [];
         }
@@ -74,7 +85,8 @@ export function parseMarkdown(
             type: 'paragraph',
             content: currentParagraph.join('\n'),
             raw: currentParagraph.join('\n'),
-            linkDefinitions: definitions
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
           });
           currentParagraph = [];
         }
@@ -98,7 +110,8 @@ export function parseMarkdown(
             type: 'paragraph',
             content: currentParagraph.join('\n'),
             raw: currentParagraph.join('\n'),
-            linkDefinitions: definitions
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
           });
           currentParagraph = [];
         }
@@ -117,7 +130,8 @@ export function parseMarkdown(
             type: 'paragraph',
             content: currentParagraph.join('\n'),
             raw: currentParagraph.join('\n'),
-            linkDefinitions: definitions
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
           });
           currentParagraph = [];
         }
@@ -136,7 +150,8 @@ export function parseMarkdown(
             type: 'paragraph',
             content: currentParagraph.join('\n'),
             raw: currentParagraph.join('\n'),
-            linkDefinitions: definitions
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
           });
           currentParagraph = [];
         }
@@ -155,7 +170,8 @@ export function parseMarkdown(
             type: 'paragraph',
             content: currentParagraph.join('\n'),
             raw: currentParagraph.join('\n'),
-            linkDefinitions: definitions
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
           });
           currentParagraph = [];
         }
@@ -174,7 +190,8 @@ export function parseMarkdown(
             type: 'paragraph',
             content: currentParagraph.join('\n'),
             raw: currentParagraph.join('\n'),
-            linkDefinitions: definitions
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
           });
           currentParagraph = [];
         }
@@ -193,7 +210,8 @@ export function parseMarkdown(
             type: 'paragraph',
             content: currentParagraph.join('\n'),
             raw: currentParagraph.join('\n'),
-            linkDefinitions: definitions
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
           });
           currentParagraph = [];
         }
@@ -211,7 +229,8 @@ export function parseMarkdown(
             type: 'paragraph',
             content: currentParagraph.join('\n'),
             raw: currentParagraph.join('\n'),
-            linkDefinitions: definitions
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
           });
           currentParagraph = [];
         }
@@ -233,13 +252,20 @@ export function parseMarkdown(
         type: 'paragraph',
         content: currentParagraph.join(' '),
         raw: currentParagraph.join('\n'),
-        linkDefinitions: definitions
+        linkDefinitions: linkDefs,
+        footnoteDefinitions: footnoteMap
       });
     }
     
     // Replace TOC placeholder with actual TOC block
     if (tocMarkerIndex !== null && blocks[tocMarkerIndex]) {
       blocks[tocMarkerIndex] = createTocBlock(allHeadings);
+    }
+    
+    // Add footnotes section at the end if there are any
+    const footnotesSection = createFootnotesSection(footnoteDefs);
+    if (footnotesSection) {
+      blocks.push(footnotesSection);
     }
   }
   

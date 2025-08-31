@@ -11,6 +11,7 @@
   import Quote from './blocks/quote.svelte';
   import Image from './blocks/image.svelte';
   import Toc from './blocks/toc.svelte';
+  import Footnotes from './blocks/footnotes.svelte';
   import type { HeadingBlock } from '$parsers/heading';
   import type { ListBlock } from '$parsers/list';
   import type { TableBlock } from '$parsers/table';
@@ -18,6 +19,7 @@
   import type { QuoteBlock } from '$parsers/quote';
   import type { ImageBlock } from '$parsers/image';
   import type { TocBlock } from '$parsers/toc';
+  import type { FootnotesSection } from '$parsers/footnote';
   
   export let filePath: string;
   export let options: ParserOptions = {
@@ -73,7 +75,16 @@
       {:else if block.type === 'horizontalRule'}
         <HorizontalRule />
       {:else if block.type === 'paragraph'}
-        <Paragraph content={block.content} linkDefinitions={block.linkDefinitions} />
+        <Paragraph 
+          content={block.content} 
+          linkDefinitions={block.linkDefinitions} 
+          footnoteDefinitions={block.footnoteDefinitions} 
+        />
+      {:else if block.type === 'footnotes'}
+        <Footnotes 
+          block={block as FootnotesSection} 
+          linkDefinitions={block.linkDefinitions} 
+        />
       {:else}
         <div class="bg-gray-50 border border-dashed border-gray-300 p-4 my-4 rounded">
           <em class="text-gray-600 text-sm">Unsupported block type: {block.type}</em>

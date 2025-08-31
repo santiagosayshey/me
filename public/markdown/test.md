@@ -406,14 +406,14 @@ This is hidden content that expands when clicked.
 $E = mc^2$
 
 ### Block math 
+
 $$
-\begin{align}
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &= \frac{4\pi}{c}\vec{\mathbf{j}} \\
-\nabla \cdot \vec{\mathbf{E}} &= 4 \pi \rho \\
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} &= \vec{\mathbf{0}} \\
-\nabla \cdot \vec{\mathbf{B}} &= 0
-\end{align}
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}
+       \exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
 $$
+
+
+
 
 ## Special Characters & Entities
 

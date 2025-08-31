@@ -11,6 +11,7 @@ import { isTocMarker, createTocBlock } from './blocks/toc';
 import type { HeadingBlock } from './blocks/heading';
 import { extractLinkDefinitions, isLinkDefinition } from './inline/link';
 import { extractFootnoteDefinitions, createFootnotesSection } from './blocks/footnote';
+import { parseMathBlock, isMathBlockStart } from './blocks/math';
 
 const DEFAULT_OPTIONS: ParserOptions = {
   enableFrontmatter: true,
@@ -140,6 +141,26 @@ export function parseMarkdown(
         if (quoteBlock) {
           blocks.push(quoteBlock);
           i = endIndex; // Skip to end of quote block
+        }
+      }
+      // Check for math block
+      else if (isMathBlockStart(line)) {
+        // Save any current paragraph first
+        if (currentParagraph.length > 0) {
+          blocks.push({
+            type: 'paragraph',
+            content: currentParagraph.join('\n'),
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
+          });
+          currentParagraph = [];
+        }
+        
+        const { block: mathBlock, endIndex } = parseMathBlock(filteredLines, i);
+        if (mathBlock) {
+          blocks.push(mathBlock);
+          i = endIndex; // Skip to end of math block
         }
       }
       // Check for code block

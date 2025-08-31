@@ -2,7 +2,7 @@ import { processSpecialCharacters } from '../inline/entities';
 
 export interface TextToken {
   type: 'text' | 'bold' | 'italic' | 'boldItalic' | 'code' | 'strikethrough' | 'link' | 
-        'subscript' | 'superscript' | 'highlight' | 'underline' | 'mark' | 'linebreak' | 'html' | 'reference' | 'footnote';
+        'subscript' | 'superscript' | 'highlight' | 'underline' | 'mark' | 'linebreak' | 'html' | 'reference' | 'footnote' | 'math';
   content: string;
   href?: string; // for links
   title?: string; // for links
@@ -29,6 +29,22 @@ export function parseInlineText(text: string): TextToken[] {
       });
       currentIndex += codeMatch[0].length;
       matched = true;
+    }
+    
+    // Check for inline math $...$
+    if (!matched) {
+      // Look for $ not preceded by backslash
+      if (currentIndex === 0 || remaining[currentIndex - 1] !== '\\') {
+        const mathMatch = remaining.slice(currentIndex).match(/^\$([^$\n]+?)\$/);
+        if (mathMatch) {
+          tokens.push({
+            type: 'math',
+            content: mathMatch[1]
+          });
+          currentIndex += mathMatch[0].length;
+          matched = true;
+        }
+      }
     }
     
     // Check for strikethrough
@@ -265,7 +281,7 @@ export function parseInlineText(text: string): TextToken[] {
     if (!matched) {
       // Find the next special character
       let nextSpecial = remaining.length;
-      const specialChars = ['*', '_', '`', '~', '[', '^', '=', '<', '\n'];
+      const specialChars = ['*', '_', '`', '~', '[', '^', '=', '<', '\n', '$'];
       
       for (const char of specialChars) {
         const idx = remaining.indexOf(char, currentIndex + 1);

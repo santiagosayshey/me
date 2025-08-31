@@ -12,6 +12,7 @@
   import Image from './blocks/image.svelte';
   import Toc from './blocks/toc.svelte';
   import Footnotes from './blocks/footnotes.svelte';
+  import MathBlock from './blocks/math-block.svelte';
   import type { HeadingBlock } from '$parsers/heading';
   import type { ListBlock } from '$parsers/list';
   import type { TableBlock } from '$parsers/table';
@@ -20,6 +21,7 @@
   import type { ImageBlock } from '$parsers/image';
   import type { TocBlock } from '$parsers/toc';
   import type { FootnotesSection } from '$parsers/footnote';
+  import type { MathBlock as MathBlockType } from '$parsers/math';
   
   export let filePath: string;
   export let options: ParserOptions = {
@@ -62,6 +64,8 @@
         <Heading block={block as HeadingBlock} />
       {:else if block.type === 'code'}
         <CodeBlock block={block as CodeBlockType} />
+      {:else if block.type === 'math'}
+        <MathBlock block={block as MathBlockType} />
       {:else if block.type === 'quote'}
         <Quote block={block as QuoteBlock} />
       {:else if block.type === 'image'}

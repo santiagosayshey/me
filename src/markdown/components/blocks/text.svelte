@@ -1,7 +1,25 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import katex from 'katex';
   import type { TextToken } from '$parsers/text';
   
   export let tokens: TextToken[];
+  
+  function renderMath(element: HTMLElement, latex: string) {
+    try {
+      katex.render(latex, element, {
+        displayMode: false,
+        throwOnError: false,
+        errorColor: '#ef4444',
+        trust: true,
+        strict: false
+      });
+    } catch (e) {
+      console.error('KaTeX inline error:', e);
+      element.textContent = latex;
+      element.classList.add('text-red-500');
+    }
+  }
 </script>
 
 {#each tokens as token}
@@ -47,5 +65,10 @@
         [{token.footnoteNumber || token.content}]
       </a>
     </sup>
+  {:else if token.type === 'math'}
+    <span
+      class="inline-block mx-0.5 text-neutral-900 dark:text-white"
+      use:renderMath={token.content}
+    ></span>
   {/if}
 {/each}

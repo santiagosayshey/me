@@ -13,7 +13,8 @@ export type BlockType =
   | 'link'
   | 'toc'
   | 'footnotes'
-  | 'footnote';
+  | 'footnote'
+  | 'math';
 
 export interface MarkdownBlock {
   type: BlockType;

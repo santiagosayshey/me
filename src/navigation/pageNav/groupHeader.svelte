@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { location } from 'svelte-spa-router';
+  import { getContext } from 'svelte';
   
   export let title: string;
   export let emoji: string = '';
   export let groupPath: string;
   export let isExpanded: boolean = true;
   
-  $: isGroupActive = $location.startsWith(`/${groupPath}`);
+  // For now, we'll check if the current path matches
+  $: isGroupActive = typeof window !== 'undefined' && window.location.pathname.startsWith(`/${groupPath}`);
   
   function toggleExpanded() {
     isExpanded = !isExpanded;

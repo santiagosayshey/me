@@ -30,11 +30,6 @@ multiline: |
   line breaks
 ---
 
-
-
-# Table of Contents
----
-
 # Markdown Test Document
 
 This document contains all markdown elements for testing purposes.

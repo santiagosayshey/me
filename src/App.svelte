@@ -1,20 +1,23 @@
 <script lang="ts">
-  import Router from 'svelte-spa-router';
+  import { Router, Route } from 'svelte-routing';
   import Navbar from '$navigation/navbar/navbar.svelte';
   import PageNav from '$navigation/pageNav/pageNav.svelte';
   import Markdown from '$md';
-  
-  const routes = {
-    '/': Markdown,
-    '/:group/:file': Markdown,
-    '*': Markdown
-  };
 </script>
 
-<Navbar />
-<div class="flex h-screen">
-  <PageNav />
-  <main class="flex-1 overflow-y-auto">
-    <Router {routes} />
-  </main>
+<div class="h-screen flex flex-col">
+  <Navbar />
+  <div class="flex flex-1 overflow-hidden">
+    <PageNav />
+    <main class="flex-1 overflow-hidden">
+      <Router>
+        <Route path="/:group/:file" let:params>
+          <Markdown params={{group: params.group, file: params.file}} />
+        </Route>
+        <Route path="/">
+          <Markdown params={{}} />
+        </Route>
+      </Router>
+    </main>
+  </div>
 </div>

@@ -15,5 +15,9 @@ export default defineConfig({
       '$stores': path.resolve('./src/stores'),
       '$navigation': path.resolve('./src/navigation')
     }
+  },
+  server: {
+    // This enables HTML5 mode routing in dev
+    historyApiFallback: true
   }
 })

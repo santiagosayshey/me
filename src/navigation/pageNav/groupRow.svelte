@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { link } from 'svelte-spa-router';
-  import { location } from 'svelte-spa-router';
+  import { link } from 'svelte-routing';
   
   export let title: string;
   export let path: string;
   export let groupPath: string;
   
-  $: href = `#/${groupPath}/${path}`;
-  $: isActive = $location === `/${groupPath}/${path}`;
+  $: href = `/${groupPath}/${path}`;
+  $: isActive = typeof window !== 'undefined' && window.location.pathname === `/${groupPath}/${path}`;
 </script>
 
 <a

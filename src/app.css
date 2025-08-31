@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode in Tailwind CSS 4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
+/* CSS Variables for colors */
+:root {
+  /* Light mode colors */
+  --color-bg: #ffffff;
+  --color-text: #171717;
+  
+  /* Font families */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+}
+
+/* Dark mode colors */
+:root.dark {
+  --color-bg: #171717;
+  --color-text: #fafafa;
+}
+
+/* Base styles */
+html {
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Code font */
+code, pre {
+  font-family: var(--font-mono);
+}
+

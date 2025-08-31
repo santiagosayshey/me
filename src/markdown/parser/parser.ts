@@ -5,6 +5,7 @@ import { parseHorizontalRule, isHorizontalRule } from './blocks/horizontal-rule'
 import { parseList, isListStart } from './blocks/list';
 import { parseTable, isTableStart } from './blocks/table';
 import { parseCodeBlock, isCodeBlockStart } from './blocks/code';
+import { parseQuoteBlock, isQuoteBlockStart } from './blocks/quote';
 
 const DEFAULT_OPTIONS: ParserOptions = {
   enableFrontmatter: true,
@@ -54,8 +55,26 @@ export function parseMarkdown(
         continue;
       }
       
+      // Check for quote block
+      if (isQuoteBlockStart(line)) {
+        // Save any current paragraph first
+        if (currentParagraph.length > 0) {
+          blocks.push({
+            type: 'paragraph',
+            content: currentParagraph.join('\n'),
+            raw: currentParagraph.join('\n')
+          });
+          currentParagraph = [];
+        }
+        
+        const { block: quoteBlock, endIndex } = parseQuoteBlock(lines, i);
+        if (quoteBlock) {
+          blocks.push(quoteBlock);
+          i = endIndex; // Skip to end of quote block
+        }
+      }
       // Check for code block
-      if (isCodeBlockStart(line)) {
+      else if (isCodeBlockStart(line)) {
         // Save any current paragraph first
         if (currentParagraph.length > 0) {
           blocks.push({

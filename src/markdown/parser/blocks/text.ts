@@ -39,7 +39,7 @@ export function parseInlineText(text: string): TextToken[] {
       }
     }
     
-    // Check for line breaks (two spaces + newline, or backslash + newline, or <br>)
+    // Check for line breaks (two spaces + newline, or backslash + newline, or <br>, or just newline)
     if (!matched) {
       // Check for <br> first (HTML line break)
       const brMatch = remaining.slice(currentIndex).match(/^<br\s*\/?>/);
@@ -58,23 +58,19 @@ export function parseInlineText(text: string): TextToken[] {
           tokens.push({
             type: 'linebreak',
             content: ''
-          });
+        });
           currentIndex += lineBreakMatch[0].length;
           matched = true;
         }
       }
-      // Also handle the case where we just have \n after spaces or backslash at the end
-      else if (currentIndex > 0 && remaining[currentIndex] === '\n') {
-        // Check if previous characters were two spaces or a backslash
-        if ((currentIndex >= 2 && remaining.slice(currentIndex - 2, currentIndex) === '  ') ||
-            (currentIndex >= 1 && remaining[currentIndex - 1] === '\\')) {
-          tokens.push({
-            type: 'linebreak',
-            content: ''
-          });
-          currentIndex += 1;
-          matched = true;
-        }
+      // Handle plain newline characters
+      else if (remaining[currentIndex] === '\n') {
+        tokens.push({
+          type: 'linebreak',
+          content: ''
+        });
+        currentIndex += 1;
+        matched = true;
       }
     }
     

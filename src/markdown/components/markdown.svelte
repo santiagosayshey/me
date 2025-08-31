@@ -8,10 +8,12 @@
   import List from './blocks/list.svelte';
   import Table from './blocks/table.svelte';
   import CodeBlock from './blocks/code-block.svelte';
+  import Quote from './blocks/quote.svelte';
   import type { HeadingBlock } from '$parsers/heading';
   import type { ListBlock } from '$parsers/list';
   import type { TableBlock } from '$parsers/table';
   import type { CodeBlock as CodeBlockType } from '$parsers/code';
+  import type { QuoteBlock } from '$parsers/quote';
   
   export let filePath: string;
   export let options: ParserOptions = {
@@ -54,6 +56,8 @@
         <Heading block={block as HeadingBlock} />
       {:else if block.type === 'code'}
         <CodeBlock block={block as CodeBlockType} />
+      {:else if block.type === 'quote'}
+        <Quote block={block as QuoteBlock} />
       {:else if block.type === 'list'}
         <List block={block as ListBlock} />
       {:else if block.type === 'table'}

@@ -318,10 +318,22 @@ done
 
 ## Blockquotes
 
-> This is a simple blockquote.
+> $icon:quote
+> $author: Alexander Pope
+> $audio:eternalSunshine.mp3
+> $link:https://www.youtube.com/watch?v=okV2XFKeT-0
+> How happy is the blameless vestal's lot!
+> The world forgetting, by the world forgot.
+> Eternal sunshine of the spotless mind!
+> Each pray'r accepted, and each wish resign'd.
 
-> This is a multi-line blockquote. It continues on the next line. And even more
-> lines.
+> $icon:quote
+> $author:gaudi
+> this is a simple quote with an icon and an author.
+
+> This is a multi-line blockquote. 
+> It continues on the next line. 
+> And even more lines.
 
 > This is a blockquote with **formatting** and _emphasis_.
 >

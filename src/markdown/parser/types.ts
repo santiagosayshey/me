@@ -4,6 +4,7 @@ export type BlockType =
   | 'heading' 
   | 'code' 
   | 'list' 
+  | 'quote' 
   | 'blockquote' 
   | 'table' 
   | 'html'

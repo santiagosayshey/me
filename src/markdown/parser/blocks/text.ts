@@ -1,3 +1,5 @@
+import { processSpecialCharacters } from '../inline/entities';
+
 export interface TextToken {
   type: 'text' | 'bold' | 'italic' | 'boldItalic' | 'code' | 'strikethrough' | 'link' | 
         'subscript' | 'superscript' | 'highlight' | 'underline' | 'mark' | 'linebreak' | 'html' | 'reference' | 'footnote';
@@ -35,7 +37,7 @@ export function parseInlineText(text: string): TextToken[] {
       if (strikeMatch) {
         tokens.push({
           type: 'strikethrough',
-          content: strikeMatch[1]
+          content: processSpecialCharacters(strikeMatch[1])
         });
         currentIndex += strikeMatch[0].length;
         matched = true;
@@ -84,7 +86,7 @@ export function parseInlineText(text: string): TextToken[] {
       if (underlineMatch) {
         tokens.push({
           type: 'underline',
-          content: underlineMatch[1]
+          content: processSpecialCharacters(underlineMatch[1])
         });
         currentIndex += underlineMatch[0].length;
         matched = true;
@@ -95,7 +97,7 @@ export function parseInlineText(text: string): TextToken[] {
       if (markMatch) {
         tokens.push({
           type: 'mark',
-          content: markMatch[1]
+          content: processSpecialCharacters(markMatch[1])
         });
         currentIndex += markMatch[0].length;
         matched = true;
@@ -134,7 +136,7 @@ export function parseInlineText(text: string): TextToken[] {
       if (highlightMatch) {
         tokens.push({
           type: 'highlight',
-          content: highlightMatch[1]
+          content: processSpecialCharacters(highlightMatch[1])
         });
         currentIndex += highlightMatch[0].length;
         matched = true;
@@ -150,7 +152,7 @@ export function parseInlineText(text: string): TextToken[] {
         if (content) {
           tokens.push({
             type: 'boldItalic',
-            content: content
+            content: processSpecialCharacters(content)
           });
           currentIndex += boldItalicMatch[0].length;
           matched = true;
@@ -168,7 +170,7 @@ export function parseInlineText(text: string): TextToken[] {
         if (endIndex !== -1) {
           tokens.push({
             type: 'boldItalic',
-            content: remaining.slice(currentIndex + 3, endIndex)
+            content: processSpecialCharacters(remaining.slice(currentIndex + 3, endIndex))
           });
           currentIndex = endIndex + 3;
           matched = true;
@@ -181,7 +183,7 @@ export function parseInlineText(text: string): TextToken[] {
         if (endIndex !== -1) {
           tokens.push({
             type: 'boldItalic',
-            content: remaining.slice(currentIndex + 3, endIndex)
+            content: processSpecialCharacters(remaining.slice(currentIndex + 3, endIndex))
           });
           currentIndex = endIndex + 3;
           matched = true;
@@ -195,7 +197,7 @@ export function parseInlineText(text: string): TextToken[] {
       if (boldMatch) {
         tokens.push({
           type: 'bold',
-          content: boldMatch[2]
+          content: processSpecialCharacters(boldMatch[2])
         });
         currentIndex += boldMatch[0].length;
         matched = true;
@@ -208,7 +210,7 @@ export function parseInlineText(text: string): TextToken[] {
       if (italicMatch) {
         tokens.push({
           type: 'italic',
-          content: italicMatch[2]
+          content: processSpecialCharacters(italicMatch[2])
         });
         currentIndex += italicMatch[0].length;
         matched = true;
@@ -236,7 +238,7 @@ export function parseInlineText(text: string): TextToken[] {
       if (linkMatch) {
         tokens.push({
           type: 'link',
-          content: linkMatch[1],
+          content: processSpecialCharacters(linkMatch[1]),
           href: linkMatch[2],
           title: linkMatch[3]
         });
@@ -286,13 +288,16 @@ export function parseInlineText(text: string): TextToken[] {
       
       const plainText = remaining.slice(currentIndex, nextSpecial);
       
+      // Process special characters in plain text
+      const processedText = processSpecialCharacters(plainText);
+      
       // Merge with previous text token if possible
       if (tokens.length > 0 && tokens[tokens.length - 1].type === 'text') {
-        tokens[tokens.length - 1].content += plainText;
+        tokens[tokens.length - 1].content += processedText;
       } else {
         tokens.push({
           type: 'text',
-          content: plainText
+          content: processedText
         });
       }
       

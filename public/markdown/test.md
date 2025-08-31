@@ -362,23 +362,9 @@ done
 
 ---
 
-# Other Elements
+# Other
 
-## Horizontal Rules
-
-Three or more hyphens:
-
----
-
-Three or more asterisks:
-
----
-
-Three or more underscores:
-
----
-
-## Footnotes (if supported)
+## Footnotes
 
 This has a footnote[^1] reference.
 
@@ -390,7 +376,7 @@ This has another footnote[^2] reference.
 
     Indented paragraph in footnote.
 
-## HTML Elements
+## HTML
 
 <details>
 <summary>Click to expand</summary>
@@ -429,14 +415,20 @@ $$
 \end{align}
 $$
 
-### Special Characters & Entities
+## Special Characters & Entities
 
-Copyright: &copy; Trademark: &trade; Registered: &reg; Less than: &lt; Greater
-than: &gt; Ampersand: &amp; Non-breaking space: &nbsp; Em dash: &mdash; En dash:
-&ndash;
+### Symbols
+Copyright: &copy; 
+Trademark: &trade; 
+Registered: &reg; 
+Less than: &lt; 
+Greater than: &gt; 
+Ampersand: &amp; 
+Non-breaking space: &nbsp; 
+Em dash: &mdash; 
+En dash: &ndash;
 
-### Emoji (if supported)
-
+### Emojis
 :smile: :heart: :thumbsup: :star: :fire: :rocket: :warning: :white_check_mark:
 
 Direct emoji: 😀 ❤️ 👍 ⭐ 🔥 🚀 ⚠️ ✅

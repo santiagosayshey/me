@@ -1,0 +1,17 @@
+[
+  {
+    "name": "dev",
+    "path": "dev",
+    "emoji": "🧭",
+    "files": [
+      {
+        "name": "mutable-immutability.md",
+        "path": "mutable-immutability"
+      },
+      {
+        "name": "test.md",
+        "path": "test"
+      }
+    ]
+  }
+]

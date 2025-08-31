@@ -1,9 +1,20 @@
 <script lang="ts">
-  import Markdown from '$md';
+  import Router from 'svelte-spa-router';
   import Navbar from '$navigation/navbar/navbar.svelte';
+  import PageNav from '$navigation/pageNav/pageNav.svelte';
+  import Markdown from '$md';
+  
+  const routes = {
+    '/': Markdown,
+    '/:group/:file': Markdown,
+    '*': Markdown
+  };
 </script>
 
 <Navbar />
-<main>
-  <Markdown filePath="/markdown/test.md" />
-</main>
+<div class="flex h-screen">
+  <PageNav />
+  <main class="flex-1 overflow-y-auto">
+    <Router {routes} />
+  </main>
+</div>

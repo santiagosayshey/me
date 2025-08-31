@@ -25,7 +25,8 @@
   import type { MathBlock as MathBlockType } from '$parsers/math';
   import type { HTMLBlock } from '$parsers/html';
   
-  export let filePath: string;
+  export let params: { group?: string; file?: string } = {};
+  export let filePath: string = '';
   export let options: ParserOptions = {
     enableFrontmatter: true,
     enableTables: true,
@@ -37,17 +38,30 @@
   let loading = true;
   let error: string | null = null;
   
-  onMount(async () => {
+  // Build the actual file path to the markdown file in public/markdown/
+  $: computedFilePath = params.group && params.file 
+    ? `/markdown/${params.group}/${params.file}.md`
+    : filePath || '/markdown/test.md';
+  
+  $: if (computedFilePath) {
+    loadMarkdown();
+  }
+  
+  async function loadMarkdown() {
     try {
       loading = true;
       error = null;
-      parsedContent = await loadAndParseMarkdown(filePath, options);
+      parsedContent = await loadAndParseMarkdown(computedFilePath, options);
     } catch (err) {
       error = err instanceof Error ? err.message : 'Failed to load markdown file';
       console.error('Error loading markdown:', err);
     } finally {
       loading = false;
     }
+  }
+  
+  onMount(() => {
+    loadMarkdown();
   });
 </script>
 

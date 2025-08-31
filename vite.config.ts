@@ -12,7 +12,8 @@ export default defineConfig({
     alias: {
       '$md': path.resolve('./src/markdown/components/markdown.svelte'),
       '$parsers': path.resolve('./src/markdown/parser/blocks'),
-      '$stores': path.resolve('./src/stores')
+      '$stores': path.resolve('./src/stores'),
+      '$navigation': path.resolve('./src/navigation')
     }
   }
 })

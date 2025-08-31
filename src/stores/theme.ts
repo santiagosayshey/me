@@ -75,18 +75,5 @@ export const isDark = derived(theme, $theme => $theme === 'dark');
 if (typeof window !== 'undefined') {
   theme.init();
   
-  // Set up keyboard shortcut
-  window.addEventListener('keydown', (e) => {
-    // Check if 'm' key is pressed without modifiers
-    if (e.key === 'm' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
-      // Don't toggle if user is typing in an input/textarea
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.contentEditable === 'true') {
-        return;
-      }
-      
-      e.preventDefault();
-      theme.toggle();
-    }
-  });
+  
 }

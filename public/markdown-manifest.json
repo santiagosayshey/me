@@ -5,13 +5,21 @@
     "emoji": "🧭",
     "files": [
       {
-        "name": "mutable-immutability.md",
-        "path": "mutable-immutability"
-      },
-      {
         "name": "test.md",
         "path": "test"
       }
     ]
+  },
+  {
+    "name": "study",
+    "path": "study",
+    "emoji": "🎓",
+    "files": []
+  },
+  {
+    "name": "waves",
+    "path": "waves",
+    "emoji": "🌊",
+    "files": []
   }
 ]

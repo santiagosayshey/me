@@ -12,6 +12,7 @@ import type { HeadingBlock } from './blocks/heading';
 import { extractLinkDefinitions, isLinkDefinition } from './inline/link';
 import { extractFootnoteDefinitions, createFootnotesSection } from './blocks/footnote';
 import { parseMathBlock, isMathBlockStart } from './blocks/math';
+import { parseHTMLBlock, isHTMLBlockStart } from './blocks/html';
 
 const DEFAULT_OPTIONS: ParserOptions = {
   enableFrontmatter: true,
@@ -121,6 +122,26 @@ export function parseMarkdown(
         if (imageBlock) {
           blocks.push(imageBlock);
           i = endIndex; // Skip to end of image block
+        }
+      }
+      // Check for html block
+      else if (isHTMLBlockStart(line)) {
+        // Save any current paragraph first
+        if (currentParagraph.length > 0) {
+          blocks.push({
+            type: 'paragraph',
+            content: currentParagraph.join('\n'),
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: linkDefs,
+            footnoteDefinitions: footnoteMap
+          });
+          currentParagraph = [];
+        }
+        
+        const { block: htmlBlock, endIndex } = parseHTMLBlock(filteredLines, i);
+        if (htmlBlock) {
+          blocks.push(htmlBlock);
+          i = endIndex; // Skip to end of html block
         }
       }
       // Check for quote block

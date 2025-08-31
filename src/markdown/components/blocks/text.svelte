@@ -32,7 +32,7 @@
   {:else if token.type === 'boldItalic'}
     <strong class="font-bold italic text-neutral-900 dark:text-neutral-100">{token.content}</strong>
   {:else if token.type === 'code'}
-    <code class="bg-blue-50 dark:bg-blue-950/30 px-2 py-1 rounded-md text-sm font-mono text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/50">{token.content}</code>
+                    <code class="bg-neutral-100 dark:bg-neutral-800 shadow-inner px-1.5 py-0.5 rounded-md text-sm font-mono text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700">{token.content}</code>
   {:else if token.type === 'strikethrough'}
     <del class="line-through text-neutral-500 dark:text-neutral-400">{token.content}</del>
   {:else if token.type === 'subscript'}

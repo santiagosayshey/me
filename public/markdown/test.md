@@ -173,18 +173,30 @@ Email link: <email@example.com>
 
 [ref1]: https://www.reference1.com "Reference 1 Title"
 [1]: https://www.reference2.com
+[img-ref]: https://i.imgflip.com/1g8my4.jpg "Bad Luck Brian Reference Style"
 
 ### Images
 
-![Alt text for image](https://via.placeholder.com/150 "Image Title")
+![$position:center Doge Dancing - Much wow, very moves](https://media.tenor.com/Wq-4McN0jM8AAAAC/doge.gif "Doge dancing GIF - Such dance!")
 
-![Image with reference][img-ref]
+![$position:left Distracted Boyfriend - Looking at new things](https://i.imgflip.com/1ur9b0.jpg "Classic relationship meme")
 
-[img-ref]: https://via.placeholder.com/100 "Reference Image"
+[![$position:right Drake Says No/Yes](https://i.imgflip.com/30b1gx.jpg)](https://knowyourmeme.com/memes/drakeposting "Drake Hotline Bling meme history")
 
-### Image with Link
+![$position:center This is Fine - Everything is burning](https://media.tenor.com/bm8Q6yAlsPsAAAAC/this-is-fine.gif "This is Fine animated GIF")
 
-[![Clickable Image](https://via.placeholder.com/100)](https://www.example.com)
+![$position:left Woman Yelling at Confused Cat Smudge](https://i.imgflip.com/345v97.jpg "Real Housewives meets cat at dinner")
+
+[![$position:right Surprised Pikachu Face](https://i.kym-cdn.com/entries/icons/mobile/000/027/475/Screen_Shot_2018-10-25_at_11.02.15_AM.jpg)](https://pokemon.com "Shocked Pikachu face")
+
+![$position:center Galaxy Brain - 200 IQ plays](https://i.imgflip.com/1jwhww.jpg "Expanding brain meme")
+
+![$position:left SpongeBob Mocking Text](https://i.imgflip.com/1otk96.jpg "Mocking SpongeBob meme")
+
+![$position:right One Does Not Simply - Walk into Mordor](https://i.imgflip.com/1bij.jpg "Boromir LOTR meme")
+
+![$position:center Success Kid - Finally got it right!](https://i.imgflip.com/1bhk.jpg "Baby fist pump victory")
+
 
 ---
 

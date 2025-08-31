@@ -6,6 +6,7 @@ import { parseList, isListStart } from './blocks/list';
 import { parseTable, isTableStart } from './blocks/table';
 import { parseCodeBlock, isCodeBlockStart } from './blocks/code';
 import { parseQuoteBlock, isQuoteBlockStart } from './blocks/quote';
+import { parseImageBlock, isImageBlockStart } from './blocks/image';
 
 const DEFAULT_OPTIONS: ParserOptions = {
   enableFrontmatter: true,
@@ -55,8 +56,26 @@ export function parseMarkdown(
         continue;
       }
       
+      // Check for image block
+      if (isImageBlockStart(line)) {
+        // Save any current paragraph first
+        if (currentParagraph.length > 0) {
+          blocks.push({
+            type: 'paragraph',
+            content: currentParagraph.join('\n'),
+            raw: currentParagraph.join('\n')
+          });
+          currentParagraph = [];
+        }
+        
+        const { block: imageBlock, endIndex } = parseImageBlock(lines, i);
+        if (imageBlock) {
+          blocks.push(imageBlock);
+          i = endIndex; // Skip to end of image block
+        }
+      }
       // Check for quote block
-      if (isQuoteBlockStart(line)) {
+      else if (isQuoteBlockStart(line)) {
         // Save any current paragraph first
         if (currentParagraph.length > 0) {
           blocks.push({

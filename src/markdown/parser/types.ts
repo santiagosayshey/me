@@ -10,13 +10,15 @@ export type BlockType =
   | 'html'
   | 'horizontalRule'
   | 'image'
-  | 'link';
+  | 'link'
+  | 'toc';
 
 export interface MarkdownBlock {
   type: BlockType;
   content: string;
   raw: string;
   metadata?: any;
+  linkDefinitions?: Map<string, any>;
 }
 
 export interface ParsedMarkdown {

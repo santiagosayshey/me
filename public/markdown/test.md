@@ -30,24 +30,14 @@ multiline: |
   line breaks
 ---
 
+
+
+# Table of Contents
+---
+
 # Markdown Test Document
 
 This document contains all markdown elements for testing purposes.
-
-## Table of Contents
-
-1. [Headings](#headings)
-2. [Text Formatting](#text-formatting)
-3. [Lists](#lists)
-4. [Links and Images](#links-and-images)
-5. [Code](#code)
-6. [Tables](#tables)
-7. [Blockquotes](#blockquotes)
-8. [Other Elements](#other-elements)
-
----
-
-## Headings
 
 # Heading Level 1
 
@@ -63,7 +53,7 @@ This document contains all markdown elements for testing purposes.
 
 ---
 
-## Text Formatting
+# Text Formatting
 
 This is a normal paragraph with some **bold text** and some _italic text_ and
 some _**bold italic text**_.
@@ -93,9 +83,9 @@ Line break with HTML<br> This is another new line
 
 ---
 
-## Lists
+# Lists
 
-### Unordered List
+## Unordered List
 
 - First item
 - Second item
@@ -106,7 +96,7 @@ Line break with HTML<br> This is another new line
   - Nested item 3
 - Fourth item
 
-### Alternative Unordered List
+## Alternative Unordered List
 
 - Item with asterisk
 - Another item
@@ -116,7 +106,7 @@ Line break with HTML<br> This is another new line
 * Another plus item
   - Nested with plus
 
-### Ordered List
+## Ordered List
 
 1. First item
 2. Second item
@@ -127,7 +117,7 @@ Line break with HTML<br> This is another new line
    3. Nested item 3
 4. Fourth item
 
-### Mixed Lists
+## Mixed Lists
 
 1. First ordered item
    - Unordered sub-item
@@ -137,7 +127,7 @@ Line break with HTML<br> This is another new line
    2. Another ordered sub-item
       - Mixed nesting
 
-### Task Lists
+## Task Lists
 
 - [x] Completed task
 - [ ] Uncompleted task
@@ -145,7 +135,7 @@ Line break with HTML<br> This is another new line
   - [x] Completed subtask
   - [ ] Uncompleted subtask
 
-### Definition List (if supported)
+## Definition List (if supported)
 
 Term 1 : Definition 1 : Another definition for Term 1
 
@@ -153,9 +143,9 @@ Term 2 : Definition 2a : Definition 2b
 
 ---
 
-## Links and Images
+# Links and Images
 
-### Links
+## Links
 
 [Basic link](https://www.example.com)
 
@@ -175,7 +165,7 @@ Email link: <email@example.com>
 [1]: https://www.reference2.com
 [img-ref]: https://i.imgflip.com/1g8my4.jpg "Bad Luck Brian Reference Style"
 
-### Images
+## Images
 
 ![$position:center Doge Dancing - Much wow, very moves](https://media.tenor.com/Wq-4McN0jM8AAAAC/doge.gif "Doge dancing GIF - Such dance!")
 
@@ -200,25 +190,25 @@ Email link: <email@example.com>
 
 ---
 
-## Code
+# Code
 
-### Inline Code
+## Inline Code
 
 Use `console.log()` to print to console.
 
-### Code Block (Indented)
+## Code Block (Indented)
 
     function hello() {
         console.log("Hello, World!");
     }
 
-### Fenced Code Block
+## Fenced Code Block
 
 ```
 Plain code block without language
 ```
 
-### Syntax Highlighted Code
+## Syntax Highlighted Code
 
 ```javascript
 $icon: javascript;
@@ -295,16 +285,16 @@ done
 
 ---
 
-## Tables
+# Tables
 
-### Basic Table
+## Basic Table
 
 | Header 1 | Header 2 | Header 3 |
 | -------- | -------- | -------- |
 | Cell 1   | Cell 2   | Cell 3   |
 | Cell 4   | Cell 5   | Cell 6   |
 
-### Table with Alignment
+## Table with Alignment
 
 | Left Aligned | Center Aligned | Right Aligned |
 | :----------- | :------------: | ------------: |
@@ -312,14 +302,14 @@ done
 | Text         |      Text      |          Text |
 | 123          |      456       |           789 |
 
-### Table with Formatting
+## Table with Formatting
 
 | **Bold** | _Italic_ | `Code` |
 | -------- | -------- | ------ |
 | **Yes**  | _Maybe_  | `null` |
 | **No**   | _Never_  | `true` |
 
-### Minimal Table
+## Minimal Table
 
 | Header 1 | Header 2 |
 | -------- | -------- |
@@ -328,7 +318,7 @@ done
 
 ---
 
-## Blockquotes
+# Blockquotes
 
 > $icon:quote
 > $author: Alexander Pope
@@ -351,7 +341,7 @@ done
 >
 > It also has multiple paragraphs.
 
-### Nested Blockquotes
+## Nested Blockquotes
 
 > Level 1 blockquote
 >
@@ -359,7 +349,7 @@ done
 >>
 >>> Level 3 deeply nested blockquote Back to level 2 Back to level 1
 
-### Blockquote with Other Elements
+## Blockquote with Other Elements
 
 > ### Heading in Blockquote
 >
@@ -372,9 +362,9 @@ done
 
 ---
 
-## Other Elements
+# Other Elements
 
-### Horizontal Rules
+## Horizontal Rules
 
 Three or more hyphens:
 
@@ -388,7 +378,7 @@ Three or more underscores:
 
 ---
 
-### Footnotes (if supported)
+## Footnotes (if supported)
 
 This has a footnote[^1] reference.
 
@@ -400,7 +390,7 @@ This has another footnote[^2] reference.
 
     Indented paragraph in footnote.
 
-### HTML Elements
+## HTML Elements
 
 <details>
 <summary>Click to expand</summary>
@@ -423,7 +413,7 @@ This is hidden content that expands when clicked.
   <dd>Another definition</dd>
 </dl>
 
-### Mathematics (if supported)
+## Mathematics (if supported)
 
 Inline math: $E = mc^2$
 
@@ -507,27 +497,6 @@ Unicode characters: café, naïve, 日本語, 中文, العربية, עברית
   </ul>
 </div>
 
-### Table with Complex Content
-
-| Feature                                   | Markdown      | HTML       | Support |
-| ----------------------------------------- | ------------- | ---------- | ------- |
-| **Bold**                                  | `**text**`    | `<strong>` | ✅      |
-| _Italic_                                  | `*text*`      | `<em>`     | ✅      |
-| [Links](#)                                | `[text](url)` | `<a>`      | ✅      |
-| ![Images](https://via.placeholder.com/20) | `![alt](url)` | `<img>`    | ✅      |
-| `Code`                                    | `` `code` ``  | `<code>`   | ✅      |
-
----
-
-## End of Test Document
-
-This document contains most standard markdown elements and many extended syntax
-features. Not all markdown parsers support all features, so this document can be
-used to test which features are supported by your specific parser.
-
-> **Note:** Some features like subscript, superscript, highlighting, definition
-> lists, and math blocks are not part of standard markdown and require extended
-> markdown processors.
 
 ---
 

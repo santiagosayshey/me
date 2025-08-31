@@ -7,6 +7,9 @@ import { parseTable, isTableStart } from './blocks/table';
 import { parseCodeBlock, isCodeBlockStart } from './blocks/code';
 import { parseQuoteBlock, isQuoteBlockStart } from './blocks/quote';
 import { parseImageBlock, isImageBlockStart } from './blocks/image';
+import { isTocMarker, createTocBlock } from './blocks/toc';
+import type { HeadingBlock } from './blocks/heading';
+import { extractLinkDefinitions, isLinkDefinition } from './inline/link';
 
 const DEFAULT_OPTIONS: ParserOptions = {
   enableFrontmatter: true,
@@ -36,10 +39,16 @@ export function parseMarkdown(
   // Parse remaining content line by line
   if (remainingContent.trim()) {
     const lines = remainingContent.split('\n');
-    let currentParagraph: string[] = [];
     
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+    // Extract link definitions first
+    const { definitions, filteredLines } = extractLinkDefinitions(lines);
+    
+    let currentParagraph: string[] = [];
+    const allHeadings: HeadingBlock[] = [];
+    let tocMarkerIndex: number | null = null;
+    
+    for (let i = 0; i < filteredLines.length; i++) {
+      const line = filteredLines[i];
       const trimmedLine = line.trim();
       
       // Skip empty lines
@@ -49,10 +58,35 @@ export function parseMarkdown(
           blocks.push({
             type: 'paragraph',
             content: currentParagraph.join('\n'),
-            raw: currentParagraph.join('\n')
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: definitions
           });
           currentParagraph = [];
         }
+        continue;
+      }
+      
+      // Check for TOC marker
+      if (isTocMarker(line)) {
+        // Save any current paragraph first
+        if (currentParagraph.length > 0) {
+          blocks.push({
+            type: 'paragraph',
+            content: currentParagraph.join('\n'),
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: definitions
+          });
+          currentParagraph = [];
+        }
+        
+        // Mark where to insert TOC
+        tocMarkerIndex = blocks.length;
+        // Add placeholder that will be replaced later
+        blocks.push({
+          type: 'toc',
+          content: '',
+          raw: line
+        });
         continue;
       }
       
@@ -63,12 +97,13 @@ export function parseMarkdown(
           blocks.push({
             type: 'paragraph',
             content: currentParagraph.join('\n'),
-            raw: currentParagraph.join('\n')
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: definitions
           });
           currentParagraph = [];
         }
         
-        const { block: imageBlock, endIndex } = parseImageBlock(lines, i);
+        const { block: imageBlock, endIndex } = parseImageBlock(filteredLines, i);
         if (imageBlock) {
           blocks.push(imageBlock);
           i = endIndex; // Skip to end of image block
@@ -81,12 +116,13 @@ export function parseMarkdown(
           blocks.push({
             type: 'paragraph',
             content: currentParagraph.join('\n'),
-            raw: currentParagraph.join('\n')
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: definitions
           });
           currentParagraph = [];
         }
         
-        const { block: quoteBlock, endIndex } = parseQuoteBlock(lines, i);
+        const { block: quoteBlock, endIndex } = parseQuoteBlock(filteredLines, i);
         if (quoteBlock) {
           blocks.push(quoteBlock);
           i = endIndex; // Skip to end of quote block
@@ -99,30 +135,32 @@ export function parseMarkdown(
           blocks.push({
             type: 'paragraph',
             content: currentParagraph.join('\n'),
-            raw: currentParagraph.join('\n')
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: definitions
           });
           currentParagraph = [];
         }
         
-        const { block: codeBlock, endIndex } = parseCodeBlock(lines, i);
+        const { block: codeBlock, endIndex } = parseCodeBlock(filteredLines, i);
         if (codeBlock) {
           blocks.push(codeBlock);
           i = endIndex; // Skip to end of code block
         }
       }
       // Check for table start (needs to check next line too)
-      else if (isTableStart(lines, i)) {
+      else if (isTableStart(filteredLines, i)) {
         // Save any current paragraph first
         if (currentParagraph.length > 0) {
           blocks.push({
             type: 'paragraph',
             content: currentParagraph.join('\n'),
-            raw: currentParagraph.join('\n')
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: definitions
           });
           currentParagraph = [];
         }
         
-        const { block: tableBlock, endIndex } = parseTable(lines, i);
+        const { block: tableBlock, endIndex } = parseTable(filteredLines, i);
         if (tableBlock) {
           blocks.push(tableBlock);
           i = endIndex; // Skip to end of table
@@ -135,12 +173,13 @@ export function parseMarkdown(
           blocks.push({
             type: 'paragraph',
             content: currentParagraph.join('\n'),
-            raw: currentParagraph.join('\n')
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: definitions
           });
           currentParagraph = [];
         }
         
-        const { block: listBlock, endIndex } = parseList(lines, i);
+        const { block: listBlock, endIndex } = parseList(filteredLines, i);
         if (listBlock) {
           blocks.push(listBlock);
           i = endIndex; // Skip to end of list
@@ -153,7 +192,8 @@ export function parseMarkdown(
           blocks.push({
             type: 'paragraph',
             content: currentParagraph.join('\n'),
-            raw: currentParagraph.join('\n')
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: definitions
           });
           currentParagraph = [];
         }
@@ -170,7 +210,8 @@ export function parseMarkdown(
           blocks.push({
             type: 'paragraph',
             content: currentParagraph.join('\n'),
-            raw: currentParagraph.join('\n')
+            raw: currentParagraph.join('\n'),
+            linkDefinitions: definitions
           });
           currentParagraph = [];
         }
@@ -178,6 +219,7 @@ export function parseMarkdown(
         const heading = parseHeading(line);
         if (heading) {
           blocks.push(heading);
+          allHeadings.push(heading); // Collect headings for TOC
         }
       } else {
         // Add to current paragraph - preserve original line for line break detection
@@ -190,8 +232,14 @@ export function parseMarkdown(
       blocks.push({
         type: 'paragraph',
         content: currentParagraph.join(' '),
-        raw: currentParagraph.join('\n')
+        raw: currentParagraph.join('\n'),
+        linkDefinitions: definitions
       });
+    }
+    
+    // Replace TOC placeholder with actual TOC block
+    if (tocMarkerIndex !== null && blocks[tocMarkerIndex]) {
+      blocks[tocMarkerIndex] = createTocBlock(allHeadings);
     }
   }
   

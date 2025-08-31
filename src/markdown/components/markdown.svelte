@@ -10,12 +10,14 @@
   import CodeBlock from './blocks/code-block.svelte';
   import Quote from './blocks/quote.svelte';
   import Image from './blocks/image.svelte';
+  import Toc from './blocks/toc.svelte';
   import type { HeadingBlock } from '$parsers/heading';
   import type { ListBlock } from '$parsers/list';
   import type { TableBlock } from '$parsers/table';
   import type { CodeBlock as CodeBlockType } from '$parsers/code';
   import type { QuoteBlock } from '$parsers/quote';
   import type { ImageBlock } from '$parsers/image';
+  import type { TocBlock } from '$parsers/toc';
   
   export let filePath: string;
   export let options: ParserOptions = {
@@ -62,6 +64,8 @@
         <Quote block={block as QuoteBlock} />
       {:else if block.type === 'image'}
         <Image block={block as ImageBlock} />
+      {:else if block.type === 'toc'}
+        <Toc block={block as TocBlock} />
       {:else if block.type === 'list'}
         <List block={block as ListBlock} />
       {:else if block.type === 'table'}
@@ -69,7 +73,7 @@
       {:else if block.type === 'horizontalRule'}
         <HorizontalRule />
       {:else if block.type === 'paragraph'}
-        <Paragraph content={block.content} />
+        <Paragraph content={block.content} linkDefinitions={block.linkDefinitions} />
       {:else}
         <div class="bg-gray-50 border border-dashed border-gray-300 p-4 my-4 rounded">
           <em class="text-gray-600 text-sm">Unsupported block type: {block.type}</em>

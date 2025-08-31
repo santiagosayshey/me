@@ -1,10 +1,11 @@
 export interface TextToken {
   type: 'text' | 'bold' | 'italic' | 'boldItalic' | 'code' | 'strikethrough' | 'link' | 
-        'subscript' | 'superscript' | 'highlight' | 'underline' | 'mark' | 'linebreak' | 'html';
+        'subscript' | 'superscript' | 'highlight' | 'underline' | 'mark' | 'linebreak' | 'html' | 'reference';
   content: string;
   href?: string; // for links
   title?: string; // for links
   tag?: string; // for html elements
+  label?: string; // for reference links
 }
 
 export function parseInlineText(text: string): TextToken[] {
@@ -212,8 +213,9 @@ export function parseInlineText(text: string): TextToken[] {
       }
     }
     
-    // Check for links [text](url "title")
+    // Check for links [text](url "title") or reference links [text][label]
     if (!matched) {
+      // Inline link
       const linkMatch = remaining.slice(currentIndex).match(/^\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)/);
       if (linkMatch) {
         tokens.push({
@@ -224,6 +226,20 @@ export function parseInlineText(text: string): TextToken[] {
         });
         currentIndex += linkMatch[0].length;
         matched = true;
+      }
+      
+      // Reference link [text][label] or [text][]
+      if (!matched) {
+        const refMatch = remaining.slice(currentIndex).match(/^\[([^\]]+)\](?:\[([^\]]*)\])?/);
+        if (refMatch && refMatch[0].includes('][')) {
+          tokens.push({
+            type: 'reference',
+            content: refMatch[1],
+            label: refMatch[2] || refMatch[1] // Use text as label if no explicit label
+          });
+          currentIndex += refMatch[0].length;
+          matched = true;
+        }
       }
     }
     
@@ -287,6 +303,29 @@ export function parseNestedText(text: string): TextToken[] {
       // Has nested formatting - for now, return as is
       // In a full implementation, you'd handle nested structures
       return token;
+    }
+    return token;
+  });
+}
+
+// Process tokens with link definitions
+export function processTokensWithDefinitions(
+  tokens: TextToken[], 
+  definitions?: Map<string, { url: string; title?: string }>
+): TextToken[] {
+  if (!definitions) return tokens;
+  
+  return tokens.map(token => {
+    if (token.type === 'reference' && token.label) {
+      const def = definitions.get(token.label.toLowerCase());
+      if (def) {
+        return {
+          type: 'link',
+          content: token.content,
+          href: def.url,
+          title: def.title
+        };
+      }
     }
     return token;
   });

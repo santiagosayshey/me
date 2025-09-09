@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { slide } from 'svelte/transition';
+  import { cubicOut } from 'svelte/easing';
   import GroupHeader from './groupHeader.svelte';
   import GroupRow from './groupRow.svelte';
   
@@ -31,7 +33,10 @@
   />
   
   {#if isExpanded && files.length > 0}
-    <div class="ml-3 mt-2 border-l-2 border-neutral-200 dark:border-neutral-800">
+    <div 
+      class="ml-3 mt-2 border-l-2 border-neutral-200 dark:border-neutral-800"
+      transition:slide={{ duration: 200, easing: cubicOut }}
+    >
       {#each files as file}
         <GroupRow
           title={formatFileName(file.name)}

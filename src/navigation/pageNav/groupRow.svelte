@@ -1,12 +1,13 @@
 <script lang="ts">
   import { link } from 'svelte-routing';
+  import { currentLocation } from '$stores/router';
   
   export let title: string;
   export let path: string;
   export let groupPath: string;
   
   $: href = `/${groupPath}/${path}`;
-  $: isActive = typeof window !== 'undefined' && window.location.pathname === `/${groupPath}/${path}`;
+  $: isActive = $currentLocation === `/${groupPath}/${path}`;
 </script>
 
 <a

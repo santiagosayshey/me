@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { getContext } from 'svelte';
+  import { currentLocation } from '$stores/router';
   
   export let title: string;
   export let emoji: string = '';
   export let groupPath: string;
   export let isExpanded: boolean = true;
   
-  // For now, we'll check if the current path matches
-  $: isGroupActive = typeof window !== 'undefined' && window.location.pathname.startsWith(`/${groupPath}`);
+  $: isGroupActive = $currentLocation.startsWith(`/${groupPath}`);
   
   function toggleExpanded() {
     isExpanded = !isExpanded;
@@ -28,7 +27,7 @@
   </div>
   
   <svg
-    class="w-4 h-4 text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200 transition-all duration-200 {isExpanded ? 'rotate-180' : ''}"
+    class="w-4 h-4 text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200 transition-all duration-200 ease-out transform {isExpanded ? 'rotate-180' : 'rotate-0'}"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"

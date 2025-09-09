@@ -67,7 +67,7 @@
   }
 
   /* Let big display equations wrap gracefully */
-  .math-block .katex-display {
+  .math-block :global(.katex-display) {
     overflow-x: visible;
     overflow-y: visible;
     white-space: normal;
@@ -76,7 +76,7 @@
   }
 
   /* Make inline math align nicely with text */
-  .katex {
+  :global(.katex) {
     font-size: 1em;
   }
 </style>

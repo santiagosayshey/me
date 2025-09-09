@@ -5,8 +5,16 @@
     "emoji": "🧭",
     "files": [
       {
+        "name": "basketball-analytics.md",
+        "path": "basketball-analytics"
+      },
+      {
         "name": "markdown-test-document.md",
         "path": "markdown-test-document"
+      },
+      {
+        "name": "pixies-quiet-loud.md",
+        "path": "pixies-quiet-loud"
       }
     ]
   },

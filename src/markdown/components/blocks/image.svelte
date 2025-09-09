@@ -27,7 +27,7 @@
     >
       <div class="relative overflow-hidden rounded-lg">
         {#if loading}
-          <div class="absolute inset-0 bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
+          <div class="absolute inset-0 bg-neutral-100 dark:bg-neutral-800 animate-pulse"></div>
         {/if}
         
         {#if imageError}
@@ -59,7 +59,7 @@
   {:else}
     <div class="relative overflow-hidden rounded-lg inline-block">
       {#if loading}
-        <div class="absolute inset-0 bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
+        <div class="absolute inset-0 bg-neutral-100 dark:bg-neutral-800 animate-pulse"></div>
       {/if}
       
       {#if imageError}
